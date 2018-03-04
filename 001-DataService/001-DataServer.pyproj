@@ -25,7 +25,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="insrall.sh" />
+    <Content Include="D:\lods\lods\001-DataService\install.sh">
+      <Link>install.sh</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
