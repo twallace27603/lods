@@ -1,0 +1,267 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "AdminPassword": {
+      "type": "securestring"
+    }
+  },
+  "variables": {
+    "OnPrem-VNETName": "001-onPrem-VNET",
+    "OnPrem-VNETPrefix": "10.0.0.0/16",
+    "OnPrem-VNETSubnet1Name": "default",
+    "OnPrem-VNETSubnet1Prefix": "10.0.0.0/24",
+    "VMSize": "Standard_D2_v2",
+    "VMVnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('OnPrem-VNETName'))]",
+    "VMSubnetRef": "[concat(variables('VMVnetID'), '/subnets/', variables('OnPrem-VNETSubnet1Name'))]",
+    "adminUser": "student",
+    "hcmHost-ComputerName": "hcmHost",
+    "hcmHost-VMName": "[variables('hcmHost-ComputerName')]",
+    "hcmHost-WindowsVersion": "2016-Datacenter",
+    "hcmHost-VMImagePublisher": "MicrosoftWindowsServer",
+    "hcmHost-VMImageOffer": "WindowsServer",
+    "hcmHost-VMNicName": "[concat(variables('hcmHost-ComputerName'), '-NIC')]",
+    "hcmHost-VMPIPName": "[concat(variables('hcmHost-ComputerName'), '-PIP')]",
+    "serviceHost-ComputerName": "serviceHost",
+    "serviceHost-VMName": "[variables('serviceHost-ComputerName')]",
+    "servicehost-UbuntuVersion": "14.04.4-LTS",
+    "serviceHostImagePublisher": "Canonical",
+    "serviceHostImageOffer": "UbuntuServer",
+    "serviceHostNicName": "[concat(variables('serviceHost-ComputerName'), '-NIC')]",
+    "aspName": "001-Hybrid-ASP",
+    "aspSKU": "S1",
+    "serviceBusNamespaceName": "[concat('lods001-',uniqueString(resourceGroup().name))]",
+    "serviceBusSAS": "[concat(variables('serviceBusNamespaceName'),'/RootManageSharedAccessKey')]"
+  },
+  "resources": [
+    {
+      "name": "[variables('OnPrem-VNETName')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "OnPrem-VNET"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('OnPrem-VNETPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('OnPrem-VNETSubnet1Name')]",
+            "properties": {
+              "addressPrefix": "[variables('OnPrem-VNETSubnet1Prefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('hcmHost-VMPIPName')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "HCM Host PIP"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic"
+      }
+    },
+
+    {
+      "name": "[variables('hcmHost-VMNicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('OnPrem-VNETName'))]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('hcmHost-VMPIPName'))]"
+      ],
+      "tags": {
+        "displayName": "hCM Host NIC"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('VMSubnetRef')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('hcmHost-VMPIPName'))]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('serviceHostNicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('OnPrem-VNETName'))]"
+      ],
+      "tags": {
+        "displayName": "service Host Nic"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('VMSubnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "name": "[variables('hcmHost-VMName')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2017-03-30",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('hcmHost-VMNicName'))]"
+      ],
+      "tags": {
+        "displayName": "hcmHost-VM"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('VMSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('hcmHost-ComputerName')]",
+          "adminUsername": "[variables('adminUser')]",
+          "adminPassword": "[parameters('AdminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('hcmHost-VMImagePublisher')]",
+            "offer": "[variables('hcmHost-VMImageOffer')]",
+            "sku": "[variables('hcmHost-WindowsVersion')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('hcmHost-VMNicName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "[variables('serviceHost-VMName')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2017-03-30",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('serviceHostNicName'))]"
+      ],
+      "tags": {
+        "displayName": "service Host VM"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('VMSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('serviceHost-ComputerName')]",
+          "adminUsername": "[variables('adminUser')]",
+          "adminPassword": "[parameters('AdminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('serviceHostImagePublisher')]",
+            "offer": "[variables('serviceHostImageOffer')]",
+            "sku": "[variables('servicehost-UbuntuVersion')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('serviceHostNicName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "[variables('aspName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-08-01",
+      "sku": {
+        "name": "[variables('aspSKU')]"
+      },
+      "dependsOn": [],
+      "tags": {
+        "displayName": "001-Hybrid-ASP"
+      },
+      "properties": {
+        "name": "[variables('aspName')]",
+        "numberOfWorkers": 1
+      }
+    },
+    {
+      "type": "Microsoft.Relay/namespaces",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard"
+      },
+      "name": "[variables('serviceBusNamespaceName')]",
+      "apiVersion": "2017-04-01",
+      "location": "[resourceGroup().location]",
+      "tags": {},
+      "scale": null,
+      "properties": {
+        "metricId": "[concat('91d431c2-a451-4b37-8782-32c2d92fca00:', variables('serviceBusNamespaceName'))]",
+        "serviceBusEndpoint": "[concat('https://', variables('serviceBusNamespaceName'),'.servicebus.windows.net:443/')]"
+      },
+      "dependsOn": []
+    },
+    {
+      "type": "Microsoft.Relay/namespaces/AuthorizationRules",
+      "name": "[variables('serviceBusSAS')]",
+      "apiVersion": "2017-04-01",
+      "location": "[resourceGroup().location]",
+      "scale": null,
+      "properties": {
+        "rights": [
+          "Listen",
+          "Manage",
+          "Send"
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Relay/namespaces', variables('serviceBusNamespaceName'))]"
+      ]
+    }
+
+  ],
+  "outputs": {}
+}
