@@ -1,7 +1,7 @@
 #!/bin/sh
 apt-get update
 apt-get install -y python3
-cp svrTest.py /etc/init.d/svrTest.py
-chmod +x /etc/init.d/svrTest.py
-update-rc.d svrTest.py defaults 80 
+cp svrtest.py /etc/init.d/svrtest.py
+chmod +x /etc/init.d/svrtest.py
+update-rc.d svrtest.py defaults 80 
 reboot

@@ -26,6 +26,7 @@
     <Content Include="azuredeploy.json" />
     <Content Include="azuredeploy.parameters.json" />
     <None Include="001-Policy.json" />
+    <Content Include="CustomScripts\installServer.sh" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>

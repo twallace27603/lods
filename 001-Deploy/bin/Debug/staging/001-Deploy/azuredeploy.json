@@ -4,6 +4,18 @@
   "parameters": {
     "AdminPassword": {
       "type": "securestring"
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "Auto-generated container in staging storage account to receive post-build staging folder upload"
+      }
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Auto-generated token to access _artifactsLocation"
+      }
     }
   },
   "variables": {
@@ -31,7 +43,9 @@
     "aspName": "001-Hybrid-ASP",
     "aspSKU": "S1",
     "serviceBusNamespaceName": "[concat('lods001-',uniqueString(resourceGroup().name))]",
-    "serviceBusSAS": "[concat(variables('serviceBusNamespaceName'),'/RootManageSharedAccessKey')]"
+    "serviceBusSAS": "[concat(variables('serviceBusNamespaceName'),'/RootManageSharedAccessKey')]",
+    "installServerRoot": "https://raw.githubusercontent.com/twallace27603/lods/master/001-DataService/",
+    "installServerScriptFileName": "install.sh"
   },
   "resources": [
     {
@@ -208,7 +222,34 @@
             }
           ]
         }
-      }
+      },
+      "resources": [
+        {
+          "name": "installServer",
+          "type": "extensions",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2016-03-30",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines', variables('serviceHost-VMName'))]"
+          ],
+          "tags": {
+            "displayName": "installServer"
+          },
+          "properties": {
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.4",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "fileUris": [
+                "[concat(variables('installServerRoot'),'install.sh')]",
+                "[concat(variables('installServerRoot'),'svrtest.py')]"
+              ],
+              "commandToExecute": "[concat('sh ', variables('installServerScriptFileName'))]"
+            }
+          }
+        }
+      ]
     },
     {
       "name": "[variables('aspName')]",
