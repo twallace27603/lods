@@ -1,6 +1,6 @@
 apt-get update
 apt-get install -y python3
-mkdir /usr/svrtest
+mkdir /usr/svrTest
 
 cp svrtest.py /usr/serverTest
 chmod +x /usr/serverTest/svrtest.py
