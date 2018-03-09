@@ -28,6 +28,7 @@
     <Content Include="D:\lods\lods\001-DataService\install.sh">
       <Link>install.sh</Link>
     </Content>
+    <Content Include="svrteststart.sh" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
