@@ -1,5 +1,6 @@
 apt-get update
-apt-get install -y python3
+apt-get install -y python-pip
+pip install web.py
 mkdir /usr/serverTest
 
 cp svrtest.py /usr/serverTest
