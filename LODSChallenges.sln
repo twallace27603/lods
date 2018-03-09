@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "001-PoC-AzureHybrid", "001-
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "001-Deploy", "001-Deploy\001-Deploy.deployproj", "{2EB392BB-EE26-466D-8D28-CFDABF025954}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "001-DataServer", "001-DataService\001-DataServer.pyproj", "{97826B3D-48EB-4F34-A8FB-3CAF0F377964}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "001-DataService", "001-DataService\001-DataService.pyproj", "{5A7F4750-A29D-47AE-B1B3-D7339E9A8F17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,15 +19,15 @@ Global
 		{2EB392BB-EE26-466D-8D28-CFDABF025954}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EB392BB-EE26-466D-8D28-CFDABF025954}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EB392BB-EE26-466D-8D28-CFDABF025954}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97826B3D-48EB-4F34-A8FB-3CAF0F377964}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97826B3D-48EB-4F34-A8FB-3CAF0F377964}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A7F4750-A29D-47AE-B1B3-D7339E9A8F17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A7F4750-A29D-47AE-B1B3-D7339E9A8F17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2EB392BB-EE26-466D-8D28-CFDABF025954} = {DAE832DA-A73C-4B0F-9068-68D1757BAF55}
-		{97826B3D-48EB-4F34-A8FB-3CAF0F377964} = {DAE832DA-A73C-4B0F-9068-68D1757BAF55}
+		{5A7F4750-A29D-47AE-B1B3-D7339E9A8F17} = {DAE832DA-A73C-4B0F-9068-68D1757BAF55}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2904FF5E-D9D4-4A32-95E1-D4586B50B28F}

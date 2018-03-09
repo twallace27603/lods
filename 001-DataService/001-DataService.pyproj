@@ -3,16 +3,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{97826b3d-48eb-4f34-a8fb-3caf0f377964}</ProjectGuid>
-    <ProjectHome>\\wdmycloud\Public\</ProjectHome>
-    <StartupFile>C:\Users\tswwc\source\repos\LODSChallenges\001-DataService\svrtest.py</StartupFile>
+    <ProjectGuid>{5a7f4750-a29d-47ae-b1b3-d7339e9a8f17}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>svrtest.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <InterpreterId />
-    <Name>001-DataServer</Name>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -20,14 +19,10 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="C:\Users\tswwc\source\repos\LODSChallenges\001-DataService\svrtest.py">
-      <Link>svrtest.py</Link>
-    </Compile>
+    <Compile Include="svrtest.py" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="D:\lods\lods\001-DataService\install.sh">
-      <Link>install.sh</Link>
-    </Content>
+    <Content Include="install.sh" />
     <Content Include="svrteststart.sh" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
