@@ -68,7 +68,9 @@
       "apiVersion": "2016-03-30",
       "dependsOn": [],
       "tags": {
-        "displayName": "HCM Host PIP"
+        "displayName": "HCM Host PIP",
+        "task2": "true",
+        "task3": "true"
       },
       "properties": {
         "publicIPAllocationMethod": "Dynamic"
@@ -184,7 +186,8 @@
         "[resourceId('Microsoft.Network/networkInterfaces', variables('serviceHostNicName'))]"
       ],
       "tags": {
-        "displayName": "service Host VM"
+        "displayName": "service Host VM",
+        "task2": "true"
       },
       "properties": {
         "hardwareProfile": {
@@ -254,7 +257,7 @@
       },
       "dependsOn": [],
       "tags": {
-        "displayName": "001-Hybrid-ASP"
+        "displayName": "001-Hybrid-ASP",
       },
       "properties": {
         "name": "[variables('aspName')]",
@@ -270,7 +273,10 @@
       "name": "[variables('serviceBusNamespaceName')]",
       "apiVersion": "2017-04-01",
       "location": "[resourceGroup().location]",
-      "tags": {},
+      "tags": {
+        "displayName": "Service bus relay",
+        "task2": "true"
+      },
       "scale": null,
       "properties": {
         "metricId": "[concat('91d431c2-a451-4b37-8782-32c2d92fca00:', variables('serviceBusNamespaceName'))]",
@@ -302,7 +308,8 @@
       "apiVersion": "2016-03-30",
       "dependsOn": [ ],
       "tags": {
-        "displayName": "shTest-pip"
+        "displayName": "shTest-pip",
+        "task2": "true"
       },
       "properties": {
         "publicIPAllocationMethod": "Dynamic"
