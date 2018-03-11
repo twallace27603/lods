@@ -35,7 +35,7 @@
     "installServerRoot": "https://raw.githubusercontent.com/twallace27603/lods/master/001-DataService/",
     "installServerScriptFileName": "install.sh",
     "shTest-pipName": "shTest-pip",
-    "shellStorageName": "[concat('shellStorage', uniqueString(resourceGroup().id))]"
+    "shellStorageName": "[concat('shellstorage', uniqueString(resourceGroup().id))]"
   },
   "resources": [
     {
