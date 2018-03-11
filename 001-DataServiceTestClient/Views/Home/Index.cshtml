@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Hybrid Connection Test";
+}
+<div class="jumbotron">
+    This is a test harness for a Hybrid Connection challenge.  This calls a web service with the following settings:
+
+   
+    <dl class="dl-horizontal">
+        <dt>Service host</dt>
+        <dd>serviceHost</dd>
+        <dt>Port</dt>
+        <dd>8080</dd>
+        <dt>Service</dt>
+        <dd>users</dd>
+        <dt>URL</dt>
+        <dd>http://serviceHost:8080/users</dd>
+    </dl>
+
+    If the call is successful you will see a list of people below.  Otherwise you will see a generic error message.
+</div>
+<div id="output">
+   
+
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(
+            function () {
+                $("#output").text("Loading results");
+               $.get('/api/Demo', function (data) {
+                    result = "<table class='table table-striped'>";
+                    $(data).each(function (index, item) {
+                        result += "<tr><td>" + item.firstName + "</td><td>" + item.lastName + "</td></tr>";
+                    });
+                    result += "</table>";
+                    $("#output").html(result);
+                }).fail(function () {
+                    $('#output').html("<div class=''>There was an error loading your data.  Please refresh the page to try again.</div>")
+                });
+            }
+        )
+    </script>
+}

@@ -5,15 +5,24 @@ import json
 
 class list_users:
     def GET(self):
-        print('Calling list_users')
-        return json.dumps(users)
+        try:
+            print('Calling list_users')
+            result = json.dumps(users)
+            return result
+        except:
+            raise web.badrequest()
 
 class get_user:
     def GET(self,user):
-        return json.dumps(users[user])
+        try:
+            result = json.dumps(users[int(user)])
+            return result
+        except:
+            raise web.notfound()
 
 class userData():
-    def __init__(self, firstName, lastName):
+    def __init__(self, id, firstName, lastName):
+        self.id = id
         self.firstName = firstName
         self.lastName = lastName
 
@@ -22,7 +31,7 @@ urls = (
     '/users/(.*)','get_user'
 )
 
-users = {'1':userData('Joe','IT').__dict__,'2':userData('Sue','User').__dict__,'3':userData('Toni','Executive').__dict__}
+users = [userData(1,'Joe','IT').__dict__,userData(2,'Sue','User').__dict__,userData(3,'Toni','Executive').__dict__]
 
 app = web.application(urls,globals())
 
