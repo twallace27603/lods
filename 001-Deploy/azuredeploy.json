@@ -152,7 +152,7 @@
       },
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('VMSize')]"
+          "vmSize": "[variables('hcmSize')]"
         },
         "osProfile": {
           "computerName": "[variables('hcmHost-ComputerName')]",
@@ -194,7 +194,7 @@
       },
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('VMSize')]"
+          "vmSize": "[variables('serviceHostSize')]"
         },
         "osProfile": {
           "computerName": "[variables('serviceHost-ComputerName')]",
