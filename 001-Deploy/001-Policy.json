@@ -2,7 +2,7 @@
   "if": {
     "not": {
       "field": "type",
-      "in": [ "Microsoft.Web/serverFarms", "Microsoft.Web/sites", "Microsoft.ServiceBus/namespaces" ]
+      "in": [  "Microsoft.Web/sites" ]
     }
   },
   "then": {

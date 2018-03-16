@@ -9,7 +9,7 @@ Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "001-Deploy", "001-Deploy\00
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "001-DataService", "001-DataService\001-DataService.pyproj", "{5A7F4750-A29D-47AE-B1B3-D7339E9A8F17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataServiceTestClient", "001-DataServiceTestClient\DataServiceTestClient.csproj", "{4A427A93-2177-46DA-AEE1-1F7BFD051687}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataServiceTestClient", "001-DataServiceTestHarness\DataServiceTestClient.csproj", "{4A427A93-2177-46DA-AEE1-1F7BFD051687}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

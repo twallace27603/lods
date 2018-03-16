@@ -11,7 +11,7 @@
     "OnPrem-VNETPrefix": "10.0.0.0/16",
     "OnPrem-VNETSubnet1Name": "default",
     "OnPrem-VNETSubnet1Prefix": "10.0.0.0/24",
-    "VMSize": "Standard_D2_v2",
+    "VMSize": "Standard_A1",
     "VMVnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('OnPrem-VNETName'))]",
     "VMSubnetRef": "[concat(variables('VMVnetID'), '/subnets/', variables('OnPrem-VNETSubnet1Name'))]",
     "adminUser": "student",
@@ -334,6 +334,10 @@
 
   ],
   "outputs": {
-   
+    "serviceHostName": {
+      "type": "string",
+      "value": "[variables('serviceHost-VMName')]"
+    }
+
   }
 }
