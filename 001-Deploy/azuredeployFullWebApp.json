@@ -6,20 +6,45 @@
     "webAppDeploymentPackage": {
       "type": "string",
       "defaultValue": "https://github.com/twallace27603/CS001-Deploy/blob/master/DataServiceTestClient.zip?raw=true"
+    },
+    "hcmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2_V3"
+    },
+    "serviceHostSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2_V3"
+    },
+    "adminUser": {
+      "type": "string",
+      "defaultValue": "student"
+    },
+    "adminPassword": {
+      "type": "string",
+      "defaultValue": "AzurePa$$w0rd"
+    },
+    "webAppName": {
+      "type": "string",
+      "minLength": 6
+    },
+    "installServerRoot": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/twallace27603/lods/master/001-DataService/"
+    },
+    "deployWebAppCode": {
+      "type": "bool",
+      "defaultValue": true
     }
-
-
   },
   "variables": {
-    "AdminPassword": "AzurePa$$w0rd",
+    "AdminPassword": "[parameters('adminPassword')]",
     "OnPrem-VNETName": "001-onPrem-VNET",
     "OnPrem-VNETPrefix": "10.0.0.0/16",
     "OnPrem-VNETSubnet1Name": "default",
     "OnPrem-VNETSubnet1Prefix": "10.0.0.0/24",
     "VMVnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('OnPrem-VNETName'))]",
     "VMSubnetRef": "[concat(variables('VMVnetID'), '/subnets/', variables('OnPrem-VNETSubnet1Name'))]",
-    "adminUser": "student",
-    "hcmSize": "Standard_D2_V3",
+    "adminUser": "[parameters('adminUser')]",
     "hcmHost-ComputerName": "hcmHost",
     "hcmHost-VMName": "[variables('hcmHost-ComputerName')]",
     "hcmHost-WindowsVersion": "2016-Datacenter",
@@ -27,7 +52,6 @@
     "hcmHost-VMImageOffer": "WindowsServer",
     "hcmHost-VMNicName": "[concat(variables('hcmHost-ComputerName'), '-NIC')]",
     "hcmHost-VMPIPName": "[concat(variables('hcmHost-ComputerName'), '-PIP')]",
-    "serviceHostSize": "Standard_D2_V3",
     "serviceHost-ComputerName": "serviceHost",
     "serviceHost-VMName": "[variables('serviceHost-ComputerName')]",
     "servicehost-UbuntuVersion": "14.04.4-LTS",
@@ -38,11 +62,9 @@
     "aspSKU": "S1",
     "serviceBusNamespaceName": "[concat('lods001-',uniqueString(resourceGroup().name))]",
     "serviceBusSAS": "[concat(variables('serviceBusNamespaceName'),'/RootManageSharedAccessKey')]",
-    "installServerRoot": "https://raw.githubusercontent.com/twallace27603/lods/master/001-DataService/",
+    "installServerRoot": "[parameters('installServerRoot')]",
     "installServerScriptFileName": "install.sh",
-    "shTest-pipName": "shTest-pip",
-    "shellStorageName": "[concat('shell', uniqueString(resourceGroup().id))]",
-    "hybridWebAppName": "[concat('hybridWebApp', uniqueString(resourceGroup().id))]"
+    "hybridWebAppName": "[parameters('webAppName')]"
   },
   "resources": [
     {
@@ -154,7 +176,7 @@
       },
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('hcmSize')]"
+          "vmSize": "[parameters('hcmSize')]"
         },
         "osProfile": {
           "computerName": "[variables('hcmHost-ComputerName')]",
@@ -196,7 +218,7 @@
       },
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('serviceHostSize')]"
+          "vmSize": "[parameters('serviceHostSize')]"
         },
         "osProfile": {
           "computerName": "[variables('serviceHost-ComputerName')]",
@@ -320,20 +342,7 @@
     //    "publicIPAllocationMethod": "Dynamic"
     //  }
     //},
-    {
-      "name": "[variables('shellStorageName')]",
-      "type": "Microsoft.Storage/storageAccounts",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2016-01-01",
-      "sku": {
-        "name": "Standard_LRS"
-      },
-      "dependsOn": [],
-      "tags": {
-        "displayName": "shellStorage"
-      },
-      "kind": "Storage"
-    },
+
     {
       "name": "[variables('hybridWebAppName')]",
       "type": "Microsoft.Web/sites",
@@ -356,6 +365,7 @@
           "type": "extensions",
           "location": "[resourceGroup().location]",
           "apiVersion": "2015-08-01",
+          "condition": "[parameters('deployWebAppCode')]",
           "dependsOn": [
             "[resourceId('Microsoft.Web/sites', variables('hybridWebAppName'))]"
           ],
