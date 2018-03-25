@@ -23,9 +23,19 @@
       "type": "string",
       "defaultValue": "AzurePa$$w0rd"
     },
-    "webAppName": {
+    "firstName": {
+      "minLength": 1,
       "type": "string",
-      "minLength": 6
+      "defaultValue": "lods"
+    },
+    "lastName": {
+      "minLength": 1,
+      "type": "string",
+      "defaultValue": "lab"
+    },
+    "instanceNo": {
+      "type": "string",
+      "defaultValue": "123459876"
     },
     "installServerRoot": {
       "type": "string",
@@ -60,11 +70,12 @@
     "serviceHostNicName": "[concat(variables('serviceHost-ComputerName'), '-NIC')]",
     "aspName": "001-Hybrid-ASP",
     "aspSKU": "S1",
-    "serviceBusNamespaceName": "[concat('lods001-',uniqueString(resourceGroup().name))]",
-    "serviceBusSAS": "[concat(variables('serviceBusNamespaceName'),'/RootManageSharedAccessKey')]",
     "installServerRoot": "[parameters('installServerRoot')]",
     "installServerScriptFileName": "install.sh",
-    "hybridWebAppName": "[parameters('webAppName')]"
+    "publicName": "[concat(substring(parameters('firstName'),0,1), if(greater(length(parameters('lastName')),6),substring(parameters('lastName'),0,6),parameters('lastName')),'-',parameters('instanceNo'))]",
+    "hybridWebAppName": "[variables('publicName')]",
+    "serviceBusNamespaceName": "[variables('publicName')]",
+    "serviceBusSAS": "[concat(variables('serviceBusNamespaceName'),'/RootManageSharedAccessKey')]"
   },
   "resources": [
     {
@@ -328,20 +339,6 @@
         "[resourceId('Microsoft.Relay/namespaces', variables('serviceBusNamespaceName'))]"
       ]
     },
-    //{
-    //  "name": "[variables('shTest-pipName')]",
-    //  "type": "Microsoft.Network/publicIPAddresses",
-    //  "location": "[resourceGroup().location]",
-    //  "apiVersion": "2016-03-30",
-    //  "dependsOn": [ ],
-    //  "tags": {
-    //    "displayName": "shTest-pip",
-    //    "task2": "true"
-    //  },
-    //  "properties": {
-    //    "publicIPAllocationMethod": "Dynamic"
-    //  }
-    //},
 
     {
       "name": "[variables('hybridWebAppName')]",
@@ -381,19 +378,6 @@
             }
           }
         }
-        //{
-        //  "apiVersion": "2015-08-01",
-        //  "name": "web",
-        //  "type": "sourcecontrols",
-        //  "dependsOn": [
-        //    "[resourceId('Microsoft.Web/sites', variables('hybridWebAppName'))]"
-        //  ],
-        //  "properties": {
-        //    "RepoUrl": "[parameters('webAppRepoURL')]",
-        //    "branch": "[parameters('WebAppBranch')]",
-        //    "IsManualIntegration": true
-        //  }
-        //}
       ]
     }
 
