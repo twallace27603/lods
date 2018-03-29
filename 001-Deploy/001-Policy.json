@@ -1,8 +1,16 @@
 ﻿{
   "if": {
     "not": {
-      "field": "type",
-      "in": [  "Microsoft.Web/sites" ]
+      "anyOf": [
+        {
+          "source": "action",
+          "like": "Microsoft.Relay/namespaces/HybridConnections/*"
+        },
+        {
+          "source": "action",
+          "like": "Microsoft.Storage/*"
+        }
+      ]
     }
   },
   "then": {
