@@ -63,7 +63,7 @@
     "aspSKU": "S1",
     "installServerRoot": "[parameters('installServerRoot')]",
     "installServerScriptFileName": "install.sh",
-    "publicName": "[toLower(parameters('uniqueName'))]",
+    "publicName": "[toLower(concat('lodsc001',parameters('uniqueName')))]",
     "hybridWebAppName": "[variables('publicName')]",
     "serviceBusNamespaceName": "[variables('publicName')]",
     "serviceBusSAS": "[concat(variables('serviceBusNamespaceName'),'/RootManageSharedAccessKey')]"
