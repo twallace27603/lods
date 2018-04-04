@@ -23,19 +23,10 @@
       "type": "string",
       "defaultValue": "AzurePa$$w0rd"
     },
-    "firstName": {
+    "uniqueName": {
       "minLength": 1,
       "type": "string",
       "defaultValue": "lods"
-    },
-    "lastName": {
-      "minLength": 1,
-      "type": "string",
-      "defaultValue": "lab"
-    },
-    "instanceNo": {
-      "type": "string",
-      "defaultValue": "123459876"
     },
     "installServerRoot": {
       "type": "string",
@@ -72,7 +63,7 @@
     "aspSKU": "S1",
     "installServerRoot": "[parameters('installServerRoot')]",
     "installServerScriptFileName": "install.sh",
-    "publicName": "[concat(substring(parameters('firstName'),0,1), if(greater(length(parameters('lastName')),6),substring(parameters('lastName'),0,6),parameters('lastName')),'-',parameters('instanceNo'))]",
+    "publicName": "[toLower(parameters('uniqueName'))]",
     "hybridWebAppName": "[variables('publicName')]",
     "serviceBusNamespaceName": "[variables('publicName')]",
     "serviceBusSAS": "[concat(variables('serviceBusNamespaceName'),'/RootManageSharedAccessKey')]"
